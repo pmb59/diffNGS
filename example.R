@@ -1,4 +1,4 @@
-### Load the package or install if not present
+### Load the package or install it
   if (!require("fda"))      { install.packages("fda") } 
   if (!require("ICSNP"))    { install.packages("ICSNP") } 
 ### BioC
@@ -8,19 +8,19 @@
   if (!require("RColorBrewer"))   { biocLite("RColorBrewer")  } 
   
 #set working dir
-setwd("./diffNGS")
+setwd(".../diffNGS")
   
 ### Label your experimental conditions
 CNDS     <- c(rep("Wt",2), rep("Mt",2) )
 ### Normalized bigwig files
-bws      <- c( "Wt_rep1.norm.bw", "Wt_rep2.norm.bw", "Mt_rep1.norm.bw", "Mt_rep2.norm.bw" )   ### Normalized bigwig files
-### Peak regions after peak calling against a paired control
+bws      <- c( "Wt_rep1.norm.bw", "Wt_rep2.norm.bw", "Mt_rep1.norm.bw", "Mt_rep2.norm.bw" ) 
+### Aggregated list of peak regions after peak calling against a paired control (in BED format)
 peaks    <-  "peaks.bed" 
     
 ### Parameters of the Analysis
 adjP <- 1e-6    # Bonferroni adjusted p-value cuttoff
 AbsFc <- 4      # absolute fold change cutoff
-Fl <- 1000      # flanks ( bp upstream and dowstream ) around region center to use in the analyses
+Fl <- 1000      # flanks ( Fl bp upstream and dowstream ) around region center to use in the analysis
 Nbasis <- 10    # number of B-spline basis used in the functiona PCA analysis
 
 ### Read BED file
@@ -35,6 +35,8 @@ x <- diffNGS(bedFile= peaks , headerBed=FALSE, bigwigs=bws, conditions=CNDS, pcs
 
 source("processDiffNGS.R")
 processDiffNGS(rawPvals = x$p.values, results=results, CNDS = CNDS, AbsFc = AbsFc, adjP = adjP, plotpdf=TRUE, Xmin=-5, Xmax=5, GTF="genes_ensembl_76_transcriptome-GRCh38_15.gtf", W=5e3 )
-
+#Processed GTF:
+#cat ensembl_76_transcriptome-GRCh38_15.gtf  | awk '$3 == "gene" {print $0}' > genes_ensembl_76_transcriptome-GRCh38_15.gtf
+    
 
 
