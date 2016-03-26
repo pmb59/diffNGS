@@ -22,7 +22,7 @@ adjP <- 1e-6    # Bonferroni adjusted p-value cuttoff
 AbsFc <- 2      # absolute fold change cutoff
 #Fl <- 1000      # flanks ( Fl bp upstream and dowstream ) around region center to use in the analysis
 Nbasis <- 10    # number of B-spline basis used in the functiona PCA analysis
-Bins <- 31
+Bins <- 31      # Number of bins in genomation
 
 ### Read BED file
 bed <- readGeneric(peaks, keep.all.metadata = FALSE)
