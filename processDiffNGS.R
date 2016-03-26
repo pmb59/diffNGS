@@ -7,7 +7,6 @@
 
 processDiffNGS <- function(rawPvals, results, CNDS, AbsFc, adjP,  plotpdf=F, Xmin=-5, Xmax=5, GTF=F, W=10e3 ) {
   
-  
   # Move results to data.frame and get Fold-Change
   for (j in 1:length(rawPvals)  ){
     
@@ -32,7 +31,8 @@ processDiffNGS <- function(rawPvals, results, CNDS, AbsFc, adjP,  plotpdf=F, Xmi
   #head(results)
   
   #report score ( differential peaks will be ranked by this score )
-  results$diff.score <- abs (results$fc ) * -log10(results$Bonferroni.pval)
+  baseline= (results$avg.C2 + results$avg.C1 ) / 2
+  results$diff.score <- abs (results$fc ) * -log10(results$Bonferroni.pval) * sqrt(baseline)
   
   Down <- which ( results$fc <= -AbsFc  & results$Bonferroni.pval<= adjP )
   if (length(Down) >0 ) { results[Down ,]$diff <- "TRUE.Down"  }
@@ -46,7 +46,6 @@ processDiffNGS <- function(rawPvals, results, CNDS, AbsFc, adjP,  plotpdf=F, Xmi
   write.csv(results, file=paste(  paste(rev(unique(CNDS)), collapse="_vs_"), "diffNGS.csv",sep="_"), row.names=F)
   
   #Generate density Figure
-  
   if(plotpdf == TRUE){
     pdf(file=paste(  paste(rev(unique(CNDS)), collapse="_vs_"), "diffNGS.pdf",sep="_"), height=5, width=5)
     i1 <- which(results$Bonferroni.pval <= adjP)
@@ -60,7 +59,7 @@ processDiffNGS <- function(rawPvals, results, CNDS, AbsFc, adjP,  plotpdf=F, Xmi
     plot(frame=F, d1, ylim=c(0,YL), xlab="Peak Mean Fold-change", main=paste(rev(unique(CNDS)), collapse="_vs_") , xlim=c(Xmin,Xmax)) # plots the results 
     points(d2, lty=2, type='l')
     points(d3, lty=1, type='l', lwd=2, col='dodgerblue3')
-    abline(v = 1, col="red", lwd=2)
+    #abline(v = 1, col="red", lwd=2)
     mtext(paste("total regions = " , nrow(results),"; ", length(Up), " Up; ",length(Down)," Down", sep="") )
     legend("topright", legend=c(expression( P <= adjP ), "n.s.", "diffNGS") , col=c("black","black","dodgerblue3"), bty="n", lty=c(1,2,1), lwd=2)
     dev.off()
@@ -90,7 +89,7 @@ processDiffNGS <- function(rawPvals, results, CNDS, AbsFc, adjP,  plotpdf=F, Xmi
     gene_name <- c()
     
     for (i in 1:nrow(raw)) {
-      gene_id[i] <- as.character( raw$V13[i] )  
+      gene_id[i]   <- as.character( raw$V13[i] )  
       gene_type[i] <- as.character(raw$V22[i] )
       gene_name[i] <-as.character(raw$V16[i] ) 
     }
@@ -120,5 +119,3 @@ processDiffNGS <- function(rawPvals, results, CNDS, AbsFc, adjP,  plotpdf=F, Xmi
   write.table(x=results, file = paste( paste(rev(unique(CNDS)), collapse="_vs_"), "fc",AbsFc, "adjP",adjP, "diffNGS.bed",sep="_"), append = FALSE, quote = F, sep = "\t", row.names = F,  col.names = F)
   
 }
-
-
