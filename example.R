@@ -19,9 +19,10 @@ peaks    <-  "peaks.bed"
     
 ### Parameters of the Analysis
 adjP <- 1e-6    # Bonferroni adjusted p-value cuttoff
-AbsFc <- 4      # absolute fold change cutoff
-Fl <- 1000      # flanks ( Fl bp upstream and dowstream ) around region center to use in the analysis
+AbsFc <- 2      # absolute fold change cutoff
+#Fl <- 1000      # flanks ( Fl bp upstream and dowstream ) around region center to use in the analysis
 Nbasis <- 10    # number of B-spline basis used in the functiona PCA analysis
+Bins <- 31
 
 ### Read BED file
 bed <- readGeneric(peaks, keep.all.metadata = FALSE)
@@ -31,7 +32,7 @@ results <- data.frame(region.chr=seqnames(bed), region.start=start(bed)-Fl ,regi
 
 # Run diffNGS
 source("diffNGS.R")  
-x <- diffNGS(bedFile= peaks , headerBed=FALSE, bigwigs=bws, conditions=CNDS, pcs = 2, variation = 0.01, flank=Fl, nbasis=Nbasis)
+x <- diffNGS(bedFile= peaks , headerBed=FALSE, bigwigs=bws, conditions=CNDS, pcs = 2, variation = 0.01, nbasis=Nbasis, NB=Bins)
 
 source("processDiffNGS.R")
 processDiffNGS(rawPvals = x$p.values, results=results, CNDS = CNDS, AbsFc = AbsFc, adjP = adjP, plotpdf=TRUE, Xmin=-5, Xmax=5, GTF="genes_ensembl_76_transcriptome-GRCh38_15.gtf", W=5e3 )
