@@ -4,7 +4,7 @@
 ################################################################################################################
 # Pedro Madrigal { pmb59 [at] cam.ac.uk }
 # 
-# This is a modied version of function narrowpeaksDiff.R of the Bioconductor package 
+# This is a modified version of function narrowpeaksDiff.R of the Bioconductor package 
 # NarrowPeaks: Shape-based Analysis of Variation in ChIP-seq using Functional PCA
 # http://bioconductor.org/packages/devel/bioc/html/NarrowPeaks.html
 #
@@ -12,23 +12,20 @@
 # component scores to identify significant differences across conditions. An application of the package 
 # for Arabidopsis datasets is described in Mateos, Madrigal, et al. (2015) Genome Biology: 16:31.
 #
-# It might required high RAM mem is fdamatrix object is large #
+# High RAM mem is required if fdamatrix object is large #
 ################################################################################################################
 
-diffNGS <- function(bedFile,  headerBed= TRUE, flank=100, bigwigs , conditions , nbasis=50, pcs = 10, variation = 0.6) {
+diffNGS <- function(bedFile,  headerBed= TRUE, bigwigs , conditions , nbasis=50, pcs = 10, variation = 0.6, NB=20) {
  
-  NB=20  # Number of bins in genomation
+  #NB= Number of bins in genomation
   
-
   fdamatrix <- list() #To store signal profiles of all datasets
 
-  
-	#Extend peak centre Upstream and Dowstream 'flank' bp
 	peaks <- readGeneric(bedFile, keep.all.metadata = FALSE)
-	start(peaks) <- start(peaks) - flank
-	end(peaks)   <- end(peaks)   + flank
+#	start(peaks) <- start(peaks)  #- flank
+#	end(peaks)   <- end(peaks)    #+ flank
 	# Parameters in genomation for signal extraction form the bigwig
-	nBins = (2*NB)+1  #(2*flank)+1
+	nBins = NB #(2*NB)+1  #(2*flank)+1
 	scaleData = FALSE  #Signal is already normalized
 
 	#Read bigwigs
@@ -36,14 +33,14 @@ diffNGS <- function(bedFile,  headerBed= TRUE, flank=100, bigwigs , conditions ,
     
     print(paste( paste("Reading bigWig File...", bigwigs[k], sep="") , Sys.time() , sep=" @ ")    )
     
-	  fdamatrix[[k]] <- matrix(0.0,ncol=1+2*NB, nrow= length(peaks) )   
+	  fdamatrix[[k]] <- matrix(0.0, ncol=NB, nrow= length(peaks) )    #ncol=1+2*NB
 	  
-	  fdamatrix[[k]]  <- ScoreMatrixBin(target = bigwigs[k], bin.num = nBins, windows = peaks, type="bigWig",rpm=F, bin.op="max" )
+	  fdamatrix[[k]]  <- ScoreMatrixBin(target = bigwigs[k], bin.num = nBins, windows = peaks, type="bigWig",rpm=F, bin.op="max" )  #bin.op="max"
     
-    
+
     	  # here we have the matrix with all the profiles
     	  # correct non-numeric values in case of NAs
-        correctval <- 1e-2  # To avoid numerical problems
+        correctval <- 1e-3 #1e-2  # To avoid numerical problems
     	  fdamatrix[[k]][which(is.na(fdamatrix[[k]])==TRUE)] <- correctval
     	  fdamatrix[[k]][which(is.nan(fdamatrix[[k]])==TRUE)] <- correctval
     	  fdamatrix[[k]][which(is.numeric(fdamatrix[[k]])==FALSE)] <- correctval
@@ -58,8 +55,8 @@ diffNGS <- function(bedFile,  headerBed= TRUE, flank=100, bigwigs , conditions ,
   
   cls <- sort(rep(brewer.pal(4,"Accent")[1:length(unique(CNDS))]  ,2 ))  
   for (k in 1:length(bigwigs) ){ 
-  plot(colMeans(fdamatrix[[k]],na.rm=TRUE),type="l", ylim=c(0,Ylim), lwd=3, main=conditions[k], xlab=paste(paste("#bins =",nBins, sep=" "), "; length of the region (bp) =", (2*flank)+1, sep=" " )  , ylab="normalized signal", cex.lab=1, col=cls[k] )
-  abline(v=NB+1, lty=2, col="darkgray")
+  plot(colMeans(fdamatrix[[k]],na.rm=TRUE),type="l", ylim=c(0,Ylim), lwd=3, main=conditions[k], xlab=paste(paste("#bins =",nBins, sep=" "), "; scaled region", sep=" " )  , ylab="normalized signal", cex.lab=1, col=cls[k] )
+  #abline(v=NB+1, lty=2, col="darkgray")
   mtext(bigwigs[k])
   }
   dev.off()
@@ -69,7 +66,8 @@ diffNGS <- function(bedFile,  headerBed= TRUE, flank=100, bigwigs , conditions ,
 	PVALS <- list()
 	uniqueCond <- unique(conditions)
 	for(j in 1:length(peaks) ){
-		Mtemp <- matrix(NA, ncol=length(uniqueCond), nrow=length(uniqueCond))
+	  Mtemp <- matrix(NA, ncol=length(uniqueCond), nrow=length(uniqueCond))
+		#Mtemp <- matrix(NA, ncol=length(uniqueCond), nrow=length(uniqueCond))
 		colnames(Mtemp) <- uniqueCond
 		rownames(Mtemp) <- uniqueCond
 		PVALS[[j]] <- as.data.frame(Mtemp)
@@ -79,18 +77,22 @@ diffNGS <- function(bedFile,  headerBed= TRUE, flank=100, bigwigs , conditions ,
 	
 	#Create B-spline basis (order 4) of the signals before FPCA:
 	bspl <- create.bspline.basis(rangeval=c(-NB,NB),nbasis=nbasis, norder=4)   # Cubic B-splines
-	argvalsBS <- -NB:NB
+	argvalsBS <- -floor(NB/2):floor(31/2)
 	
 	
 	for(j in 1:length(peaks) ){
     print(paste( paste("Analyzing peak region #",j,sep=""), Sys.time() , sep=" @ ")  )  
-		tempMatrix <- matrix(0.0, ncol=1+2*NB, nrow= length(bigwigs) )
+		tempMatrix <- matrix(0.0, ncol=NB, nrow= length(bigwigs) )                       #ncol=1+2*NB
 		for (m in 1:length(bigwigs)) {
-      if (sum (fdamatrix[[m]][j,]) == 0) {   tempMatrix[m,] <- rep(1e-2 , length( fdamatrix[[m]][j,] ) ) }
+      #if all zeros, generate random sequence to avoid numerical problems
+      if (sum (fdamatrix[[m]][j,]) == 0) {   tempMatrix[m,] <- runif(length( fdamatrix[[m]][j,] ), 0.0, 1e-3)   }  #rep(1e-2 , length( fdamatrix[[m]][j,] ) ) }
       if (sum (fdamatrix[[m]][j,]) != 0) {   tempMatrix[m,] <- fdamatrix[[m]][j,]  }
 			#tempMatrix[m,] <- fdamatrix[[m]][j,]
 		}
-
+    
+    
+#to avoid numeric problems in pca
+if ( length(range(tempMatrix)) > 1   ){
     
 
 		fdaData <- Data2fd(y=t(tempMatrix), argvals= argvalsBS, basisobj=bspl)		
@@ -116,13 +118,15 @@ diffNGS <- function(bedFile,  headerBed= TRUE, flank=100, bigwigs , conditions ,
 		}
     
     
-
+}#diff cond
+if ( length(range(tempMatrix)) < 2   ){
+  for (o in 1:length(uniqueCond)){ for (p in 1:length(uniqueCond)){  PVALS[[j]][o,p]  <- 1.0  } }
+}  
   
+
 		# report the P-values in a list of data.frames (PVALS)		
 	}			
 	return(list(fdaprofiles=fdamatrix, p.values = PVALS ) ) # report Signal and Raw P-values 
 
 
 }     
-
-
