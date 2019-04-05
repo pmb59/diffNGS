@@ -10,6 +10,7 @@ NarrowPeaks: Shape-based Analysis of Variation in ChIP-seq using Functional PCA 
 <h3>Citation:</h3> 
 Please cite NarrowPeaks if you use diffNGS in your research:
 
+
 Madrigal P, Krajewski P. NarrowPeaks: Shape-based Analysis of Variation in ChIP-Seq using Functional PCA. R package version 1.9.4. 2013. <a href="10.18129/B9.bioc.NarrowPeaks"> DOI: 10.18129/B9.bioc.NarrowPeaks </a>.
 
 <h3>Contact:</h3> 
