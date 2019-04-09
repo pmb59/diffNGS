@@ -88,35 +88,36 @@ diffNGS <- function(bedFile,  headerBed= TRUE, bigwigs , conditions , nbasis=50,
 		#to avoid numeric problems in pca
 		if ( length(range(tempMatrix)) > 1   ){
     
-		fdaData <- Data2fd(y=t(tempMatrix), argvals= argvalsBS, basisobj=bspl)		
-    		# plot.fd(fdaData, main=j, col=c("blue", "blue", "magenta", "magenta"),lty=1, xlab="distance to peak centre", ylab="normalized signal")
-    		# legend("topright", legend=c(conditions[1],conditions[3]), col=c("blue", "magenta") , bty="n", lty=1, lwd=2 )
-		pc <- pca.fd(fdobj=fdaData, nharm = pcs, harmfdPar=fdPar(fdaData),centerfns = FALSE)
-		#plot.fd(pc$harmonics)
+			fdaData <- Data2fd(y=t(tempMatrix), argvals= argvalsBS, basisobj=bspl)		
+    			# plot.fd(fdaData, main=j, col=c("blue", "blue", "magenta", "magenta"),lty=1, xlab="distance to peak centre", ylab="normalized signal")
+    			# legend("topright", legend=c(conditions[1],conditions[3]), col=c("blue", "magenta") , bty="n", lty=1, lwd=2 )
+			pc <- pca.fd(fdobj=fdaData, nharm = pcs, harmfdPar=fdPar(fdaData),centerfns = FALSE)
+			#plot.fd(pc$harmonics)
 		
-		# Select the PC scores for the components which amount >= 'variation'
-		#print(pc$varprop)
-		CS <- cumsum(pc$varprop)
-		requiredPCs <- which(CS >= variation)[1]
+			# Select the PC scores for the components which amount >= 'variation'
+			#print(pc$varprop)
+			CS <- cumsum(pc$varprop)
+			requiredPCs <- which(CS >= variation)[1]
 		
-		# Hotelling's T2 test between the conditions provided
-		for (o in 1:length(uniqueCond)){
-			for (p in 1:length(uniqueCond)){
-				Xid <- which(conditions == uniqueCond[o] )
-				Yid <- which(conditions == uniqueCond[p] )
-				PVALS[[j]][o,p]  <- HotellingsT2(X=as.matrix(pc$scores[Xid ,1:requiredPCs],ncol=requiredPCs),Y=as.matrix(pc$scores[Yid,1:requiredPCs],ncol=requiredPCs), test="chi")$p.value
+			# Hotelling's T2 test between the conditions provided
+			for (o in 1:length(uniqueCond)){
+				for (p in 1:length(uniqueCond)){
+					Xid <- which(conditions == uniqueCond[o] )
+					Yid <- which(conditions == uniqueCond[p] )
+					PVALS[[j]][o,p]  <- HotellingsT2(X=as.matrix(pc$scores[Xid ,1:requiredPCs],ncol=requiredPCs),Y=as.matrix(pc$scores[Yid,1:requiredPCs],ncol=requiredPCs), test="chi")$p.value
+				}
 			}
-		}
     
     
-	}#diff cond
-	if ( length(range(tempMatrix)) < 2   ){
-  		for (o in 1:length(uniqueCond)){ for (p in 1:length(uniqueCond)){  PVALS[[j]][o,p]  <- 1.0  } }
-	}  
+		}#diff cond
+		if ( length(range(tempMatrix)) < 2   ){
+  			for (o in 1:length(uniqueCond)){ for (p in 1:length(uniqueCond)){  PVALS[[j]][o,p]  <- 1.0  } }
+		}  
   
 
-# report the P-values in a list of data.frames (PVALS)		
-}			
+		# report the P-values in a list of data.frames (PVALS)		
+	}			
 	return(list(fdaprofiles=fdamatrix, p.values = PVALS ) ) # report Signal and Raw P-values 
 
 }     
+
