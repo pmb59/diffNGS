@@ -17,7 +17,7 @@
 
 diffNGS <- function(bedFile,  headerBed= TRUE, bigwigs , conditions , nbasis=50, pcs = 10, variation = 0.6, NB=20) {
  
-  #NB= Number of bins in genomation
+  # NB= Number of bins in genomation
   
   fdamatrix <- list() #To store signal profiles of all datasets
 
@@ -31,18 +31,18 @@ diffNGS <- function(bedFile,  headerBed= TRUE, bigwigs , conditions , nbasis=50,
 	#Read bigwigs
 	for (k in 1:length(bigwigs) ){
     
-    print(paste( paste("Reading bigWig File...", bigwigs[k], sep="") , Sys.time() , sep=" @ ")    )
+    		print(paste( paste("Reading bigWig File...", bigwigs[k], sep="") , Sys.time() , sep=" @ ")    )
     
-	  fdamatrix[[k]] <- matrix(0.0, ncol=NB, nrow= length(peaks) )    #ncol=1+2*NB
+	  	fdamatrix[[k]] <- matrix(0.0, ncol=NB, nrow= length(peaks) )    #ncol=1+2*NB
 	  
-	  fdamatrix[[k]]  <- ScoreMatrixBin(target = bigwigs[k], bin.num = nBins, windows = peaks, type="bigWig",rpm=F, bin.op="max" )  #bin.op="max"
+	  	fdamatrix[[k]]  <- ScoreMatrixBin(target = bigwigs[k], bin.num = nBins, windows = peaks, type="bigWig",rpm=F, bin.op="max" )  #bin.op="max"
     
 
-    	  # here we have the matrix with all the profiles
-    	  # correct non-numeric values in case of NAs
-        correctval <- 1e-3 #1e-2  # To avoid numerical problems   sample(1:100, 1, replace=FALSE)/ 1e5 
-    	  fdamatrix[[k]][which(is.na(fdamatrix[[k]])==TRUE)] <- correctval
-    	  fdamatrix[[k]][which(is.nan(fdamatrix[[k]])==TRUE)] <- correctval
+    	  	# here we have the matrix with all the profiles
+    	  	# correct non-numeric values in case of NAs
+        	correctval <- 1e-3 #1e-2  # To avoid numerical problems   sample(1:100, 1, replace=FALSE)/ 1e5 
+    	  	fdamatrix[[k]][which(is.na(fdamatrix[[k]])==TRUE)] <- correctval
+    	  	fdamatrix[[k]][which(is.nan(fdamatrix[[k]])==TRUE)] <- correctval
     	  fdamatrix[[k]][which(is.numeric(fdamatrix[[k]])==FALSE)] <- correctval
     
 	}
