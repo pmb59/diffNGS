@@ -40,7 +40,7 @@ diffNGS <- function(bedFile,  headerBed= TRUE, bigwigs , conditions , nbasis=50,
 
     	  # here we have the matrix with all the profiles
     	  # correct non-numeric values in case of NAs
-        correctval <- 1e-3 #1e-2  # To avoid numerical problems
+        correctval <- 1e-3 #1e-2  # To avoid numerical problems   sample(1:100, 1, replace=FALSE)/ 1e5 
     	  fdamatrix[[k]][which(is.na(fdamatrix[[k]])==TRUE)] <- correctval
     	  fdamatrix[[k]][which(is.nan(fdamatrix[[k]])==TRUE)] <- correctval
     	  fdamatrix[[k]][which(is.numeric(fdamatrix[[k]])==FALSE)] <- correctval
