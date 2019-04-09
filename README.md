@@ -1,4 +1,4 @@
-# diffNGS: differential peak analysis in Next-Generation Sequencing data
+# diffNGS: differential peak analysis in Next-Generation Sequencing data with replicates
 
 diffNGS is a modified version of function narrowpeaksDiff.R of the Bioconductor package <a href="http://bioconductor.org/packages/devel/bioc/html/NarrowPeaks.html">
 NarrowPeaks: Shape-based Analysis of Variation in ChIP-seq using Functional PCA </a>. An application of the package for Arabidopsis datasets is described in <a href="http://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0597-1"> Mateos, Madrigal, et al. (2015) **Genome Biology**: 16:31 </a>. 
