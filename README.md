@@ -6,7 +6,9 @@ NarrowPeaks: Shape-based Analysis of Variation in ChIP-seq using Functional PCA 
 The repository contains an R script that can be used to identify differential read-enriched regions in **normalized bigwig** files obtained from **replicated** ATAC-seq/DNase-seq/ChIP-seq data. Peak calling at each condition and generation of normalized bigwig tracks of the samples should be done before using diffNGS. 
 
 
-
+```R
+library()
+```
 
 
 <h3>Citation:</h3> 
