@@ -14,7 +14,7 @@ Please cite NarrowPeaks if you use diffNGS in your research:
 Madrigal P, Krajewski P. NarrowPeaks: Shape-based Analysis of Variation in ChIP-Seq using Functional PCA. R package version 1.26.0. 2019. <a href="http://bioconductor.org/packages/NarrowPeaks/"> http://bioconductor.org/packages/NarrowPeaks/ DOI: 10.18129/B9.bioc.NarrowPeaks </a>.
 
 <h3>Contact:</h3> 
-The code is still under active development, and I welcome biology and computational scientists for all kinds of collaborations and communications. Please feel free to contact Dr. Pedro Madrigal at pmb59(AT)cam.ac.uk if you have any question.
+Please feel free to contact Dr. Pedro Madrigal at pmb59(AT)cam.ac.uk if you have any question.
 
 
 
