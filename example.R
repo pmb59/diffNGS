@@ -19,9 +19,9 @@ bws      <- c('S11.bw','S12.bw','S21.bw','S22.bw')
 peaks    <-  'regions.bed'
 
 ### Parameters of the Analysis
-Fl <- 0         # flanks ( Fl bp upstream and dowstream ) around region center to use in the analysis
+Fl <- 0         # extend flanks ( Fl bp upstream and dowstream ) around regions
 Nbasis <- 10    # number of B-spline basis used in the functiona PCA analysis
-Bins <- 31      # Number of bins in genomation
+Bins <- 31      # number of bins in which each region is divided
 
 ### Read BED file
 bed <- readGeneric(peaks, keep.all.metadata = FALSE)
@@ -32,10 +32,10 @@ head(results)
 
 # Run diffNGS for 2 Principal Components
 source("diffNGS.R")  
-x <- diffNGS(bedFile= peaks , headerBed=FALSE, bigwigs=bws, conditions=CNDS, pcs = 2, variation = 0.3, nbasis=Nbasis, NB=Bins)
+x <- diffNGS(bedFile= peaks , headerBed=FALSE, bigwigs=bws, conditions=CNDS, pcs = 2, variation = 0.3, nbasis = Nbasis, NB = Bins)
 head(x)
 
-# Obtain P.values and fold-changes
+# Obtain p.values and fold-changes
 for (j in 1:length(x$p.values)  ){
   results$pval[j] <- x$p.values[[j]][1,2]
   results$avg.C2[j] <- mean( max(x$fdaprofiles[[3]][j,]) , max(x$fdaprofiles[[4]][j,]) ) 
@@ -49,7 +49,7 @@ for (j in 1:length(x$p.values)  ){
 zeroP <- which(results$pval == 0.0)
 results$pval[zeroP] <- as.numeric(noquote(unlist(format(.Machine)))[1])
 
-#Correct P-values for Multiple Hypothesis Testing
+#Correct p-values for Multiple Hypothesis Testing
 results$fdr <- p.adjust(results$pval, method = "fdr")
 
 # Sort results by FDR
