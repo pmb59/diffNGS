@@ -1,5 +1,6 @@
 # diffNGS: differential peak analysis in Next-Generation Sequencing data
-<h5> R scripts to identify differential read-enriched regions in **normalized bigwig** datasets of **replicated** ATAC-seq/DNase-seq/ChIP-seq data</h5>
+
+R scripts to identify differential read-enriched regions in **normalized bigwig** datasets of **replicated** ATAC-seq/DNase-seq/ChIP-seq data
 
 Peak calling at each condition and generation of normalized bigwig tracks of the samples should be done before using diffNGS. It requires BEDtools and a GTF file with annotated gene features (e.g., from ftp://ftp.ensembl.org/pub/release-83/gtf/homo_sapiens).
 
