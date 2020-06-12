@@ -10,8 +10,6 @@ The repository contains an R script that can be used to identify differential re
 <h3>Citation:</h3> 
 Please cite this paper if you use diffNGS in your research:
 
-<a href="http://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0597-1"> Mateos, Madrigal, et al. (2015) **Genome Biology**: 16:31 </a>. 
-
 Mateos JL, Madrigal P, et al. <a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0597-1"> Combinatorial activities of SHORT VEGETATIVE PHASE and FLOWERING LOCUS C define distinct modes of flowering regulation in Arabidopsis </a>. Genome Biology 16, 31 (2015)
 
 <h3>Contact:</h3> 
