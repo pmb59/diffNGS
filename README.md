@@ -1,8 +1,8 @@
 # diffNGS: differential peak analysis in Next-Generation Sequencing data with replicates
 
-diffNGS is a modified version of function `narrowpeaksDiff.R` of the Bioconductor package [NarrowPeaks: Shape-based Analysis of Variation in ChIP-seq using Functional PCA](http://bioconductor.org/packages/3.10/bioc/html/NarrowPeaks.html). 
+diffNGS is a modified version of function `narrowpeaksDiff.R` of the Bioconductor package [NarrowPeaks: Shape-based Analysis of Variation in ChIP-seq using Functional PCA](http://bioconductor.org/packages/3.10/bioc/html/NarrowPeaks.html).
 
-The repository contains an R script that can be used to identify differential read-enriched regions in **normalized bigwig** files obtained from **replicated** ATAC-seq/DNase-seq/ChIP-seq data. Peak calling at each condition and generation of normalized bigwig tracks of the samples should be done before using diffNGS. 
+The repository contains an R script that can be used to identify differential read-enriched regions in **normalized bigwig** files obtained from **replicated** ATAC-seq/DNase-seq/ChIP-seq data. Peak calling at each condition and generation of normalized bigwig tracks of the samples should be done before using diffNGS.
 
 ## Examples
 
