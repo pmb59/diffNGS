@@ -6,7 +6,7 @@
 # 
 # This is a modified version of function narrowpeaksDiff.R of the Bioconductor package 
 # NarrowPeaks: Shape-based Analysis of Variation in ChIP-seq using Functional PCA
-# http://bioconductor.org/packages/3.12/bioc/html/NarrowPeaks.html
+# http://bioconductor.org/packages/3.10/bioc/html/NarrowPeaks.html
 #
 # It quantifies differences between the shapes, and uses Hotelling's T2 tests on the functional principal 
 # component scores to identify significant differences across conditions. An application of the package 
