@@ -1,5 +1,3 @@
-[![GitHub Super-Linter](https://github.com/pmb59/diffNGS/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
-
 # diffNGS: differential peak analysis in Next-Generation Sequencing data with replicates
 
 diffNGS is a modified version of function `narrowpeaksDiff.R` of the Bioconductor package [NarrowPeaks: Shape-based Analysis of Variation in ChIP-seq using Functional PCA](http://bioconductor.org/packages/3.10/bioc/html/NarrowPeaks.html). 
