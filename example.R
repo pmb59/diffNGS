@@ -57,5 +57,5 @@ results_sorted  <- results[order(results$fdr, decreasing = FALSE),]
 head(results_sorted )
 
 # Write results
-write.csv(results_sorted , file='diffNGS_results_sorted.csv', row.names = F)
+write.csv(results_sorted , file='diffNGS_results_sorted.csv', row.names = FALSE)
 
