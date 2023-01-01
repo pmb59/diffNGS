@@ -9,7 +9,7 @@ The repository contains an R script that can be used to identify differential re
 
 <h2>Examples</h2> 
 <h4>for ATAC-seq</h4> 
-https://github.com/pmb59/endoderm/tree/master/atacseq/diffNGS
+<a href="https://github.com/pmb59/endoderm/tree/master/atacseq/diffNGS">https://github.com/pmb59/endoderm/tree/master/atacseq/diffNGS</a>
 <h4>for ChIP-seq</h4> 
 An application of the package for Arabidopsis datasets is described <a href="http://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0597-1"> here</a>. 
 
